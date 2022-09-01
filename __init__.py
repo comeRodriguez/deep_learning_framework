@@ -1,0 +1,1 @@
+#export PYTHONPATH='/Volumes/USB_C_COME/deep_learning_framework/'

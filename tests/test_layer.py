@@ -9,7 +9,13 @@ FEATURES, LABELS = load_planar_dataset(n_example=10)
 def test_fully_connected_init():
     """Test the fully connected class initialization
     """
-    dense_layer = FullyConnected(FEATURES.T, 2, "sigmoid", random_seed=2)
+    dense_layer = FullyConnected(
+        number_of_neurons=2,
+        activation_function="sigmoid",
+        random_seed=2
+    )
+    dense_layer.initialize_weights_and_biais(n_prev_units=2)
+    dense_layer.update_input(FEATURES.T)
     expected_weights = np.array(
         [
             [-0.00416758, -0.00056267],
@@ -24,7 +30,13 @@ def test_fully_connected_init():
 def test_fully_connected_linear_part():
     """Test the FullyConnected.compute_linear_part() method
     """
-    dense_layer = FullyConnected(FEATURES.T, 2, "sigmoid", random_seed=2)
+    dense_layer = FullyConnected(
+        number_of_neurons=2,
+        activation_function="sigmoid",
+        random_seed=2
+    )
+    dense_layer.initialize_weights_and_biais(n_prev_units=2)
+    dense_layer.update_input(FEATURES.T)
     dense_layer.compute_linear_part()
     expected_linear_part_values = np.array(
         [
@@ -42,7 +54,13 @@ def test_fully_connected_linear_part():
 def test_fully_connected_activations_part():
     """Test the FullyConnected.compute_activations() method
     """
-    dense_layer = FullyConnected(FEATURES.T, 2, "sigmoid", random_seed=2)
+    dense_layer = FullyConnected(
+        number_of_neurons=2,
+        activation_function="sigmoid",
+        random_seed=2
+    )
+    dense_layer.initialize_weights_and_biais(n_prev_units=2)
+    dense_layer.update_input(FEATURES.T)
     dense_layer.compute_activations()
     expected_activation_values = np.array(
         [

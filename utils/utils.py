@@ -19,7 +19,11 @@ def initialize_with_zeros(input_dim: int, n_units: int) -> Tuple[np.ndarray, np.
     biais = np.zeros([n_units, 1])
     return weights, biais
 
-def initialize_randomly(input_dim: int, n_units: int, random_seed: int=None) -> Tuple[np.ndarray, np.ndarray]:
+def initialize_randomly(
+    input_dim: int,
+    n_units: int,
+    random_seed: int=None
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     This function creates a random vector of shape (n_units, input_dim) for w and
     initializes b to a zero vector of shape (n_units, 1).
@@ -50,15 +54,17 @@ def load_planar_dataset(n_example: int) -> Tuple[np.ndarray, np.ndarray]:
         Tuple[np.ndarray, np.ndarray]: Features matrix and associated labels vector
     """
     np.random.seed(1)
-    N = int(n_example/2)
-    D = 2
-    FEATURES = np.zeros((n_example,D))
-    LABELS = np.zeros((n_example,1), dtype='uint8')
+    n_representation = int(n_example/2)
+    n_features = 2
+    features = np.zeros((n_example, n_features))
+    labels = np.zeros((n_example,1), dtype='uint8')
     max_ray = 4
     for label in range(2):
-        index = range(N*label,N*(label+1))
-        theta = np.linspace(label*3.12,(label+1)*3.12,N) + np.random.randn(N)*0.2
-        radius = max_ray*np.sin(4*theta) + np.random.randn(N)*0.2
-        FEATURES[index] = np.c_[radius*np.sin(theta), radius*np.cos(theta)]
-        LABELS[index] = label
-    return FEATURES, LABELS
+        index = range(n_representation*label,n_representation*(label+1))
+        theta = np.linspace(
+            label*3.12,(label+1)*3.12,n_representation
+        ) + np.random.randn(n_representation)*0.2
+        radius = max_ray*np.sin(4*theta) + np.random.randn(n_representation)*0.2
+        features[index] = np.c_[radius*np.sin(theta), radius*np.cos(theta)]
+        labels[index] = label
+    return features, labels

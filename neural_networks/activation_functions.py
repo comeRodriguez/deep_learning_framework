@@ -31,7 +31,7 @@ def sigmoid_derivative(arg: Tuple[np.ndarray, float]) -> Tuple[np.ndarray, float
     d_sig = sigmoid(arg)*(1 - sigmoid(arg))
     return d_sig
 
-def relu(arg: Tuple[np.ndarray, float]) -> Tuple[np.ndarray, float]:
+def relu_func(arg: Tuple[np.ndarray, float]) -> Tuple[np.ndarray, float]:
     """
     Compute the relu of arg
 
@@ -80,7 +80,7 @@ class ActivationFunction():
         self.name = name
         self.corresponding_functions = {
             "sigmoid": [sigmoid, sigmoid_derivative],
-            "relu": [relu, relu_derivative]
+            "relu": [relu_func, relu_derivative]
         }
 
     def get_name(self) -> str:

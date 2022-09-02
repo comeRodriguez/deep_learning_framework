@@ -5,7 +5,7 @@ import numpy as np
 def binary_cross_entropy(true_labels: np.ndarray, predicted_labels: np.ndarray) -> float:
     """Compute the binary cross entropy of a set of predicted labels and a set of true labels.
     The dimensions of true_labels and predicted_labels have to be equal.
-    (formula: 
+    (formula:
         L = true_labels*log(predicted_label) + (1-true_labels)*log(1-predicted_labels)
         BCE = -1/m * sum(L) for all labels in true_labels and predicted_labels
     )
@@ -20,10 +20,10 @@ def binary_cross_entropy(true_labels: np.ndarray, predicted_labels: np.ndarray) 
         float: Computed binary cross entropy loss
     """
     n_labels = true_labels.shape[0]
-    binary_cross_entropy = -(1/n_labels)*np.sum(
+    binary_cross_entr = -(1/n_labels)*np.sum(
         true_labels*np.log(predicted_labels) + (1-true_labels)*np.log(1-predicted_labels)
     )
-    return binary_cross_entropy
+    return binary_cross_entr
 
 def binary_cross_entropy_derivative(
     true_labels: np.ndarray,
@@ -32,7 +32,7 @@ def binary_cross_entropy_derivative(
     """Compute the derivative of binary cross entropy of a set of predicted labels and
     a set of true labels according to the predicted labels.
     The dimensions of true_labels and predicted_labels have to be equal.
-    (formula: 
+    (formula:
         L = true_labels*log(predicted_label) + (1-true_labels)*log(1-predicted_labels)
         BCE = -1/m * sum(L) for all labels in true_labels and predicted_labels
 
@@ -73,7 +73,7 @@ class CostFunction():
             "binary_cross_entropy",
         ]
         if name not in authorized_names:
-            raise ValueError(f"Invalid activation function, expected one of {authorized_names}")
+            raise ValueError(f"Invalid cost function, expected one of {authorized_names}")
         self.name = name
         self.corresponding_functions = {
             "binary_cross_entropy": [binary_cross_entropy, binary_cross_entropy_derivative],

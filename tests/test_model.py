@@ -29,3 +29,11 @@ def test_model_add_layer():
     assert model.layers[2].weights.shape == (20, 10)
     assert model.layers[1].biais.shape == (10, 1)
     assert model.layers[2].biais.shape == (20, 1)
+
+def test_model_build():
+    """Test the Model.build_model()
+    """
+    model = Model(input_layer=FEATURES.T)
+    model.build_model(cost_function="binary_cross_entropy", learning_rate=0.01)
+    assert model.cost.get_name() == "binary_cross_entropy"
+    assert model.learning_rate == 0.01

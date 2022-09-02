@@ -6,7 +6,7 @@ import pytest
 from neural_networks.activation_functions import (
     sigmoid,
     sigmoid_derivative,
-    relu,
+    relu_func,
     relu_derivative,
     ActivationFunction
 )
@@ -34,9 +34,9 @@ def test_derivative_sigmoid():
 def test_relu():
     """Test the relu function
     """
-    sig_value = relu(0)
-    sig_value_2 = relu(np.array([0, 2]))
-    sig_value_3 = relu(np.array([[0, 0.011], [1.12565, 3.76762]]))
+    sig_value = relu_func(0)
+    sig_value_2 = relu_func(np.array([0, 2]))
+    sig_value_3 = relu_func(np.array([[0, 0.011], [1.12565, 3.76762]]))
     assert sig_value == 0
     assert np.array_equal(sig_value_2, np.array([0, 2]))
     assert np.array_equal(sig_value_3, np.array([[0, 0.011], [1.12565, 3.76762]]))

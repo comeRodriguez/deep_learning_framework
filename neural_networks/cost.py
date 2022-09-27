@@ -2,12 +2,12 @@
 """
 import numpy as np
 
-def binary_cross_entropy(true_labels: np.ndarray, predicted_labels: np.ndarray) -> float:
+def binary_cross_entropy(true_labels: np.ndarray, predicted_probas: np.ndarray) -> float:
     """Compute the binary cross entropy of a set of predicted labels and a set of true labels.
-    The dimensions of true_labels and predicted_labels have to be equal.
+    The dimensions of true_labels and predicted_probas have to be equal.
     (formula:
-        L = true_labels*log(predicted_label) + (1-true_labels)*log(1-predicted_labels)
-        BCE = -1/m * sum(L) for all labels in true_labels and predicted_labels
+        L = true_labels*log(predicted_label) + (1-true_labels)*log(1-predicted_probas)
+        BCE = -1/m * sum(L) for all labels in true_labels and predicted_probas
     )
 
     Args:
@@ -21,40 +21,37 @@ def binary_cross_entropy(true_labels: np.ndarray, predicted_labels: np.ndarray) 
     """
     n_labels = true_labels.shape[0]
     binary_cross_entr = -(1/n_labels)*np.sum(
-        true_labels*np.log(predicted_labels) + (1-true_labels)*np.log(1-predicted_labels)
+        true_labels*np.log(predicted_probas) + (1-true_labels)*np.log(1-predicted_probas)
     )
     return binary_cross_entr
 
 def binary_cross_entropy_derivative(
     true_labels: np.ndarray,
-    predicted_labels: np.ndarray
+    predicted_probas: np.ndarray
 ) -> float:
     """Compute the derivative of binary cross entropy of a set of predicted labels and
     a set of true labels according to the predicted labels.
-    The dimensions of true_labels and predicted_labels have to be equal.
+    The dimensions of true_labels and predicted_probas have to be equal.
     (formula:
-        L = true_labels*log(predicted_label) + (1-true_labels)*log(1-predicted_labels)
-        BCE = -1/m * sum(L) for all labels in true_labels and predicted_labels
+        L = true_labels*log(predicted_label) + (1-true_labels)*log(1-predicted_probas)
+        BCE = -1/m * sum(L) for all labels in true_labels and predicted_probas
 
         DERIVATIVE:
-        dL/d(predicted_labels) = true_labels/predicted - (1-true_labels)/(1-predicted_labels)
-        d(BCE)/d(predicted_labels) = -1/m * sum(dL/d(predicted_labels))
+        dL/d(predicted_probas) = true_labels/predicted - (1-true_labels)/(1-predicted_probas)
+        d(BCE)/d(predicted_probas) = -1/m * sum(dL/d(predicted_probas))
     )
 
     Args:
         true_labels (np.ndarray): vector of true labels for the supervised algorithm.
             The labels are 0 or 1.
-        predicted_labels (np.ndarray): predicted labels as the output of a neural network.
+        predicted_probas (np.ndarray): predicted labels as the output of a neural network.
             The labels have to be float between 0 and 1
 
     Returns:
         float: Computed derivative of the binary cross entropy loss
     """
-    n_labels = true_labels.shape[0]
-    d_binary_cross_entropy = -(1/n_labels) * np.sum(
-        true_labels/predicted_labels - (1-true_labels)/(1-predicted_labels)
-    )
-    return d_binary_cross_entropy
+    d_binary_cross_loss = -(np.divide(true_labels, predicted_probas) - np.divide((1-true_labels), (1-predicted_probas)))
+    return d_binary_cross_loss
 
 class CostFunction():
     """Cost function class
@@ -87,14 +84,14 @@ class CostFunction():
         """
         return self.name
 
-    def get_computed_cost(self, true_labels: np.ndarray, predicted_labels: np.ndarray) -> float:
+    def get_computed_cost(self, true_labels: np.ndarray, predicted_probas: np.ndarray) -> float:
         """Get the results of the cost function between true_labels and
-        predicted_labels
+        predicted_probas
 
         Args:
             true_labels (np.ndarray): vector of true labels for the supervised algorithm.
                 The labels are 0 or 1.
-            predicted_labels (np.ndarray): predicted labels as the output of a neural network.
+            predicted_probas (np.ndarray): predicted labels as the output of a neural network.
                 The labels have to be float between 0 and 1
 
         Returns:
@@ -102,27 +99,27 @@ class CostFunction():
         """
         cost = self.corresponding_functions[self.name][0](
             true_labels=true_labels,
-            predicted_labels=predicted_labels
+            predicted_probas=predicted_probas
         )
         return cost
 
     def get_derivative_computed_cost(
         self,
         true_labels: np.ndarray,
-        predicted_labels: np.ndarray
+        predicted_probas: np.ndarray
     ) -> float:
         """Get the results of the derivative of cost function
 
         Args:
             true_labels (np.ndarray): vector of true labels for the supervised algorithm.
                 The labels are 0 or 1.
-            predicted_labels (np.ndarray): predicted labels as the output of a neural network.
+            predicted_probas (np.ndarray): predicted labels as the output of a neural network.
                 The labels have to be float between 0 and 1
 
         Returns:
             float: computed derivative
         """
         d_cost = self.corresponding_functions[self.name][1](
-            true_labels=true_labels, predicted_labels=predicted_labels
+            true_labels=true_labels, predicted_probas=predicted_probas
         )
         return d_cost

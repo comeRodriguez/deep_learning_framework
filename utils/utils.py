@@ -38,7 +38,7 @@ def initialize_randomly(
     """
     if random_seed:
         np.random.seed(random_seed)
-    weights = np.random.randn(n_units, input_dim) * 0.01
+    weights = np.random.randn(n_units, input_dim) * 0.1
     biais = np.zeros([n_units, 1])
     return weights, biais
 

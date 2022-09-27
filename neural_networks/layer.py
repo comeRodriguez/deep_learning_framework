@@ -49,7 +49,6 @@ class FullyConnected():
             random_seed=self.random_seed
         )
 
-
     def compute_linear_part(self):
         """Compute the linear part of a neuron in a neural network
         (i.e => compute Z = Weights.Features + Biais)
@@ -63,3 +62,29 @@ class FullyConnected():
         """
         self.compute_linear_part()
         self.activations = self.activation_function.get_function_returns(arg=self.linear_part)
+    
+    def compute_derivatives(
+        self,
+        weights_foll_layer: np.ndarray,
+        d_linear_part_foll_layer: np.ndarray,
+        prev_activations: np.ndarray,
+        n_examples: int
+        ) -> None:
+        self.derivative_activations = np.dot(weights_foll_layer.T, d_linear_part_foll_layer)
+        self.derivative_linear = self.derivative_activations *  \
+            self.activation_function.get_derivative_function_returns(self.linear_part)
+        self.derivative_weights = 1/n_examples * np.dot(self.derivative_linear, prev_activations.T)
+        self.derivative_biais = 1/n_examples * np.sum(self.derivative_linear, axis=1, keepdims=True)
+    
+    def compute_derivatives_last_layer(self, prev_activations, n_examples: int, cost_derivative) -> None:
+        self.derivative_activations = cost_derivative
+        self.derivative_linear = self.derivative_activations *  \
+            self.activation_function.get_derivative_function_returns(self.linear_part)
+        # self.derivative_linear = self.activations - y_true
+        self.derivative_weights = 1/n_examples * np.dot(self.derivative_linear, prev_activations.T)
+        self.derivative_biais = 1/n_examples * np.sum(self.derivative_linear, axis=1, keepdims=True)
+
+    def update_parameters(self, learning_rate: float) -> None:
+        self.weights = self.weights - learning_rate*self.derivative_weights
+        self.biais = self.biais - learning_rate*self.derivative_biais
+
